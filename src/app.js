@@ -1,12 +1,14 @@
 import React from 'react';
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import reducers from './reducers'
 import SuperheroesList from './SuperheroesList'
 import TabBarList from './TabBarList'
+import configureStore from './configureStore'
+
+let store = configureStore()
+
 const App = () => (
-  <Provider store={createStore(reducers)}>
+  <Provider store={store}>
     <View style={{flex: 1}}>
       <TabBarList />
     </View>

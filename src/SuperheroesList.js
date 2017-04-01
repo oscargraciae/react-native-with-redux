@@ -8,13 +8,19 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
+import { fetchData } from './actions'
 
 class SuperheroesList extends Component {
 
+  componentWillMount(){
+    console.log("Cargando component");
+    this.props.fetchData()
+  }
+
   getSuperHeroes() {
-    const { superheroes } = this.props
-    return superheroesDatas = superheroes.map((heroe, key) => {
-      return <Text key={key}>{heroe.superhero}</Text>
+    const { dataTvMaze } = this.props
+    return dataTvShow = dataTvMaze.data.map((tv, key) => {
+      return <Text key={key}>{tv.show.name}</Text>
     })
   }
 
@@ -22,14 +28,25 @@ class SuperheroesList extends Component {
     console.log(this.props);
     return (
       <View>
-        {this.getSuperHeroes()}
+        {this.props.dataTvMaze.isFetching && <Text>Loading</Text>}
+        {
+          this.props.dataTvMaze.data.length ?
+            this.getSuperHeroes()
+            : null
+        }
       </View>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { superheroes: state.superheroes }
+  return { dataTvMaze: state.dataReducer }
 }
 
-export default connect(mapStateToProps)(SuperheroesList)
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchData: () => dispatch(fetchData())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SuperheroesList)
